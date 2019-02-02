@@ -6,7 +6,7 @@ var waitingListData = require('./data/waitingListData');
 
 var app = express();
 var PORT = process.env.PORT || 3000;
-
+app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
 app.get('/', function(req, res) {
@@ -30,6 +30,7 @@ app.get('/api/waitlist', function(req, res) {
 });
 
 app.post('/api/tables', function(req, res) {
+	console.log(req.body);
 	if (tableData.length < 5) {
 		tableData.push(req.body);
 		res.json(true);

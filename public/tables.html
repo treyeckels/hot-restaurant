@@ -49,9 +49,7 @@
 							<h4 class="panel-title">Current Reservations</h4>
 						</div>
 						<div class="panel-body" id="tableSection">
-							<div class="well" id="tableWell-01">
-								<h2><span class="label label-primary">1</span> | afhaque89</h2>
-							</div>
+							<div class="well" id="tableWell-01"></div>
 						</div>
 					</div>
 
@@ -61,9 +59,7 @@
 							<h4 class="panel-title">Waiting List</h4>
 						</div>
 						<div class="panel-body" id="waitlistSection">
-							<div class="well" id="waitlistWell-01">
-								<h2><span class="label label-primary">1</span> | saimacool</h2>
-							</div>
+							<div class="well" id="waitlistWell-01"></div>
 						</div>
 					</div>
 				</div>
@@ -80,5 +76,35 @@
 				</div>
 			</footer>
 		</div>
+
+		<script>
+			const tableData = $.get('/api/tables');
+			tableData.then((res, err) => {
+				console.log(res);
+				const tableWell01 = $('#tableWell-01');
+				let html = '';
+				res.forEach((item, index) => {
+					html =
+						html +
+						`<h2><span class="label label-primary">${index + 1}</span> | ${
+							item.customerID
+						}</h2>`;
+				});
+				tableWell01[0].innerHTML = html;
+			});
+			const waitlistData = $.get('/api/waitlist');
+			waitlistData.then(res => {
+				const waitlistWell01 = $('#waitlistWell-01');
+				let html = '';
+				res.forEach((item, index) => {
+					html =
+						html +
+						`<h2><span class="label label-primary">${index + 1}</span> | ${
+							item.customerID
+						}</h2>`;
+				});
+				waitlistWell01[0].innerHTML = html;
+			});
+		</script>
 	</body>
 </html>

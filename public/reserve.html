@@ -51,22 +51,38 @@
 							<form role="form">
 								<div class="form-group">
 									<label for="">Name</label>
-									<input type="text" class="form-control" id="reserve_name" />
+									<input
+										name="customerName"
+										type="text"
+										class="form-control"
+										id="reserve_name"
+									/>
 								</div>
 
 								<div class="form-group">
 									<label for="">Phone Number</label>
-									<input type="text" class="form-control" id="reserve_phone" />
+									<input
+										name="phoneNumber"
+										type="text"
+										class="form-control"
+										id="reserve_phone"
+									/>
 								</div>
 
 								<div class="form-group">
 									<label for="">Email</label>
-									<input type="text" class="form-control" id="reserve_email" />
+									<input
+										name="customerEmail"
+										type="text"
+										class="form-control"
+										id="reserve_email"
+									/>
 								</div>
 
 								<div class="form-group">
 									<label for="">Unique ID</label>
 									<input
+										name="customerID"
 										type="text"
 										class="form-control"
 										id="reserve_uniqueID"
@@ -91,5 +107,34 @@
 				</div>
 			</footer>
 		</div>
+		<script>
+			$('form').submit(evt => {
+				evt.preventDefault();
+				console.log(evt);
+				const $form = $(evt.target);
+				const data = $form.serializeArray();
+				console.log(data);
+				// {"customerName":"Trey","customerEmail":"trey.eckels@example.com","customerID":"trey","phoneNumber":"000-000-0000"}
+
+				const reduced = data.reduce((prev, next) => {
+					prev[next.name] = next.value;
+					return prev;
+				}, {});
+				console.log(reduced);
+				$.ajax({
+					type: 'POST',
+					url: 'api/tables',
+					data: reduced,
+					dataType: 'json',
+					success: res => {
+						if (res) {
+							window.alert('You have been given a seat.');
+						} else {
+							window.alert('You have been placed on a waiting list.');
+						}
+					}
+				});
+			});
+		</script>
 	</body>
 </html>
